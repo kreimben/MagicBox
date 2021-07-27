@@ -89,6 +89,12 @@ void MBApp::eventLoop() {
 
             case XCB_BUTTON_PRESS:
                 std::cout << "Button pressed!: " << ((xcb_button_press_event_t *)event)->detail << std::endl;
+                std::cout << "root: " << ((xcb_button_press_event_t *) event)->root << std::endl;
+                std::cout << "root x: " << ((xcb_button_press_event_t *) event)->root_x << std::endl;
+                std::cout << "root y: " << ((xcb_button_press_event_t *) event)->root_y << std::endl;
+                std::cout << "event: " << ((xcb_button_press_event_t *) event)->event << std::endl;
+                std::cout << "event x: " << ((xcb_button_press_event_t *) event)->event_x << std::endl;
+                std::cout << "event y: " << ((xcb_button_press_event_t *) event)->event_y << std::endl;
                 std::cout << "when: " << ((xcb_button_press_event_t *)event)->time << std::endl << std::endl;
                 break;
 

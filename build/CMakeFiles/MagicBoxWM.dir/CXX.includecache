@@ -24,6 +24,12 @@ memory
 xcb/xcb.h
 -
 
+/home/ubuntu/Documents/repository/MagicBoxWM/src/MBWindow.cpp
+MBWindow.h
+/home/ubuntu/Documents/repository/MagicBoxWM/src/MBWindow.h
+
+/home/ubuntu/Documents/repository/MagicBoxWM/src/MBWindow.h
+
 /home/ubuntu/Documents/repository/MagicBoxWM/src/main.cpp
 ./MBApp.h
 /home/ubuntu/Documents/repository/MagicBoxWM/src/MBApp.h
