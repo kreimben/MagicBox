@@ -1,7 +1,7 @@
 //
 // Created by ubuntu on 7/27/21.
 //
-// This class just primitive class for inheritances.
+// This class is just primitive class for inheritances.
 //
 
 #ifndef MAGICBOXWM_MBWINDOW_H
