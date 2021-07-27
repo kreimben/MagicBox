@@ -8,8 +8,6 @@ int main() {
     std::cout << "App Started!" << std::endl;
 
     /* Start event loop! */
-    // auto instance = MBApp::shared();
-    // instance.eventLoop();
     auto app = std::make_unique<MBApp>();
     app->eventLoop();
 

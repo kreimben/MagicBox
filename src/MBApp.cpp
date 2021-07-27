@@ -8,8 +8,6 @@
 #include <xcb/xcb.h>
 #include <xcb/xproto.h>
 
-// MBApp * MBApp::_instance = 0;
-
 MBApp::MBApp() {
 
     /*

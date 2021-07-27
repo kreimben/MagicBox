@@ -12,8 +12,6 @@
 class MBApp {
 
 private:
-    // static MBApp *_instance;
-
     xcb_connection_t *connect;
     xcb_screen_t     *screen;
     xcb_window_t      window_id;
@@ -22,11 +20,6 @@ private:
 
 
 public:
-    // static MBApp &shared() {
-    //     if (_instance == 0) _instance = new MBApp();
-    //     return *_instance;
-    // }
-
     MBApp();
 
     static void printScreenInfo(xcb_screen_t *screen);
