@@ -1,0 +1,3 @@
+/home/ubuntu/Documents/repository/MagicBoxWM/build/CMakeFiles/rebuild_cache.dir
+/home/ubuntu/Documents/repository/MagicBoxWM/build/CMakeFiles/edit_cache.dir
+/home/ubuntu/Documents/repository/MagicBoxWM/build/CMakeFiles/MagicBoxWM.dir

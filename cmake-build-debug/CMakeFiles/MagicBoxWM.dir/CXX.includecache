@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/ubuntu/Documents/repository/MagicBoxWM/src/MBApp.cpp
+MBApp.h
+/home/ubuntu/Documents/repository/MagicBoxWM/src/MBApp.h
+iostream
+-
+xcb/xcb.h
+-
+
+/home/ubuntu/Documents/repository/MagicBoxWM/src/MBApp.h
+memory
+-
+xcb/xcb.h
+-
+
