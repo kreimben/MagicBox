@@ -108,3 +108,22 @@ void MBApp::eventLoop() {
 void MBApp::disconnectApp() {
     xcb_disconnect(connect);
 }
+
+MBApp * MBApp::_instance = nullptr;
+
+MBApp* MBApp::getInstance() {
+    if (_instance == nullptr) _instance = new MBApp();
+    return _instance;
+}
+
+xcb_connection_t *MBApp::getConnection() {
+    return this->connect;
+}
+
+xcb_window_t MBApp::getWindowID() {
+    return this->window_id;
+}
+
+xcb_screen_t * MBApp::getScreen() {
+    return this->screen;
+}

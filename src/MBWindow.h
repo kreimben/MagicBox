@@ -15,7 +15,9 @@ private:
     xcb_window_t window_id;
 
 public:
-    MBWindow()
+    MBWindow();
+
+    void eventLoop();
 };
 
 

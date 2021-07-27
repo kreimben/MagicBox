@@ -4,6 +4,7 @@
 CMakeFiles/MagicBoxWM.dir/src/MBApp.cpp.o: ../src/MBApp.cpp
 CMakeFiles/MagicBoxWM.dir/src/MBApp.cpp.o: ../src/MBApp.h
 
+CMakeFiles/MagicBoxWM.dir/src/MBWindow.cpp.o: ../src/MBApp.h
 CMakeFiles/MagicBoxWM.dir/src/MBWindow.cpp.o: ../src/MBWindow.cpp
 CMakeFiles/MagicBoxWM.dir/src/MBWindow.cpp.o: ../src/MBWindow.h
 

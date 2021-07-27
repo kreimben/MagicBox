@@ -8,7 +8,7 @@ int main() {
     std::cout << "App Started!" << std::endl;
 
     /* Start event loop! */
-    auto app = std::make_unique<MBApp>();
+    auto app = MBApp::getInstance();
     app->eventLoop();
 
     /* After quit event loop, Disconnect the window from X Server. */

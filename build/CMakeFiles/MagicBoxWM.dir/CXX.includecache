@@ -6,16 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/ubuntu/Documents/repository/MagicBoxWM/src/MBApp.cpp
-MBApp.h
-/home/ubuntu/Documents/repository/MagicBoxWM/src/MBApp.h
-iostream
--
-xcb/xcb.h
--
-xcb/xproto.h
--
-
 /home/ubuntu/Documents/repository/MagicBoxWM/src/MBApp.h
 iostream
 -
@@ -27,14 +17,14 @@ xcb/xcb.h
 /home/ubuntu/Documents/repository/MagicBoxWM/src/MBWindow.cpp
 MBWindow.h
 /home/ubuntu/Documents/repository/MagicBoxWM/src/MBWindow.h
+MBApp.h
+/home/ubuntu/Documents/repository/MagicBoxWM/src/MBApp.h
+xcb/xcb.h
+-
+xcb/xproto.h
+-
 
 /home/ubuntu/Documents/repository/MagicBoxWM/src/MBWindow.h
-
-/home/ubuntu/Documents/repository/MagicBoxWM/src/main.cpp
-./MBApp.h
-/home/ubuntu/Documents/repository/MagicBoxWM/src/MBApp.h
-iostream
--
-memory
+xcb/xcb.h
 -
 
