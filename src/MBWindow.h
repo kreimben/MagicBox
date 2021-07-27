@@ -7,17 +7,15 @@
 #ifndef MAGICBOXWM_MBWINDOW_H
 #define MAGICBOXWM_MBWINDOW_H
 
+#include <xcb/xcb.h>
 
 class MBWindow {
 
+private:
+    xcb_window_t window_id;
+
 public:
-    MBWindow() {
-
-    }
-
-    ~MBWindow() {
-
-    }
+    MBWindow()
 };
 
 
