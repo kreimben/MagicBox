@@ -5,15 +5,16 @@
 #include <memory>
 #include <iostream>
 
-MBTopBar::MBTopBar(std::shared_ptr<xcb_connection_t> connect, std::shared_ptr<xcb_screen_t> screen, xcb_window_t rootWindowID) {
+MBTopBar::MBTopBar(xcb_connection_t *connect, xcb_screen_t *screen, xcb_window_t rootWindowID) {
 
     this->connect = connect;
+    this->screen = screen;
 
     /* Generate top bar's ID */
-    this->topbarWindowID = xcb_generate_id(connect.get());
+    this->topbarWindowID = xcb_generate_id(connect);
 
     /* Get a root's width */
-    auto geoInfo = xcb_get_geometry_reply(connect.get(), xcb_get_geometry(connect.get(), rootWindowID), nullptr);
+    auto geoInfo = xcb_get_geometry_reply(connect, xcb_get_geometry(connect, rootWindowID), nullptr);
     auto width = geoInfo->width;
 
     /* Set masks. */
@@ -24,7 +25,7 @@ MBTopBar::MBTopBar(std::shared_ptr<xcb_connection_t> connect, std::shared_ptr<xc
     list[2] = XCB_EVENT_MASK_EXPOSURE | XCB_EVENT_MASK_BUTTON_PRESS | XCB_EVENT_MASK_BUTTON_MOTION;
 
     /* Create MBTopBar top bar. */
-    xcb_create_window(connect.get(),
+    xcb_create_window(connect,
                       XCB_COPY_FROM_PARENT,
                       this->topbarWindowID,
                       rootWindowID,
@@ -34,7 +35,7 @@ MBTopBar::MBTopBar(std::shared_ptr<xcb_connection_t> connect, std::shared_ptr<xc
                       value_mask, list);
 
     /* Map actual things. */
-    xcb_map_window(connect.get(), this->getTopbarWindowID());
+    xcb_map_window(connect, this->getTopbarWindowID());
 
     this->eventLoop();
 }
@@ -42,16 +43,26 @@ MBTopBar::MBTopBar(std::shared_ptr<xcb_connection_t> connect, std::shared_ptr<xc
 void MBTopBar::eventLoop() {
     xcb_generic_event_t *event;
 
-    while (event = xcb_poll_for_event(this->connect.get())) {
+    if (true) {
+        event =  xcb_poll_for_event( this->connect );
         switch (event->response_type) {
             case XCB_BUTTON_PRESS: {
-                xcb_button_press_event_t *event = event;
+                auto ev = (xcb_button_press_event_t *)event;
 
                 std::cout << "button pressed!" << std::endl;
-                std::cout << "event x: " << event->event_x << std::endl;
-                std::cout << "event y: " << event->event_y << std::endl;
-                std::cout << "when: " << event->time << std::endl;
+                std::cout << "event x: " << ev->event_x << std::endl;
+                std::cout << "event y: " << ev->event_y << std::endl;
+                std::cout << "when: " << ev->time << std::endl;
+
+                delete ev;
+
+                break;
             }
         }
+
     }
+}
+
+xcb_window_t MBTopBar::getTopbarWindowID() {
+    return this->topbarWindowID;
 }

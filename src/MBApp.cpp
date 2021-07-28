@@ -2,12 +2,12 @@
 // Created by ubuntu on 7/27/21.
 //
 
-#include "MBApp.h"
-
 #include <iostream>
 #include <xcb/xcb.h>
 #include <xcb/xproto.h>
 #include <memory>
+
+#include "MBApp.h"
 
 MBApp::MBApp() {
 
@@ -15,13 +15,13 @@ MBApp::MBApp() {
      * Connect to X Server!!!
      */
 
-    this->connect = std::make_shared<xcb_connection_t>(xcb_connect(nullptr, nullptr));
-    if (xcb_connection_has_error(this->connect.get())) { std::cout << "Error to connect X Server!" << std::endl; exit(1); }
+    this->connect = xcb_connect(nullptr, nullptr);
+    if (xcb_connection_has_error(this->connect)) { std::cout << "Error to connect X Server!" << std::endl; exit(1); }
 
     std::cout << "Display successfully connected!" << std::endl;
 
-    const xcb_setup_t *setup = xcb_get_setup(this->connect.get());
-    this->screen = std::make_shared<xcb_screen_t>(xcb_setup_roots_iterator(setup).data);
+    const xcb_setup_t *setup = xcb_get_setup(this->connect);
+    this->screen = xcb_setup_roots_iterator(setup).data;
 
     this->printScreenInfo(screen);
 
@@ -29,7 +29,7 @@ MBApp::MBApp() {
      * Generate Window ID
      */
 
-    this->window_id = xcb_generate_id(this->connect.get());
+    this->window_id = xcb_generate_id(this->connect);
 
     /*
     ** Set MASKs.
@@ -45,7 +45,7 @@ MBApp::MBApp() {
     ** Create Foundation Background Window.
     */
 
-    xcb_create_window(connect.get(),
+    xcb_create_window(connect,
                       this->screen->root_depth,
                       this->window_id,
                       this->screen->root,
@@ -56,11 +56,11 @@ MBApp::MBApp() {
                       props);
 
     /* Display the foundation background window. */
-    xcb_map_window(connect.get(), window_id);
-    xcb_flush(connect.get());
+    xcb_map_window(connect, window_id);
+    xcb_flush(connect);
 }
 
-void MBApp::printScreenInfo(std::shared_ptr<xcb_screen_t> screen) {
+void MBApp::printScreenInfo(xcb_screen_t *screen) {
 
     std::cout << "screen info: " <<
     "allowed depths len: " << screen->allowed_depths_len << std::endl <<
@@ -83,7 +83,7 @@ void MBApp::printScreenInfo(std::shared_ptr<xcb_screen_t> screen) {
 void MBApp::eventLoop() {
     std::cout << "MBApp::eventLoop()" << std::endl;
 
-    while (auto event = xcb_wait_for_event(this->connect.get())) {
+    while (auto event = xcb_wait_for_event(this->connect)) {
         std::cout << "In while loop!" << std::endl;
         switch (event->response_type) {
 
@@ -122,11 +122,11 @@ void MBApp::eventLoop() {
 
                     int16_t conf[2] = { mot->event_x, mot->event_y };
 
-                    xcb_configure_window(this->connect.get(),
+                    xcb_configure_window(this->connect,
                                          mot->event,
                                          XCB_CONFIG_WINDOW_X | XCB_CONFIG_WINDOW_Y,
                                          conf);
-                    xcb_flush(this->connect.get());
+                    xcb_flush(this->connect);
                 }
                 break;
             }
@@ -139,7 +139,7 @@ void MBApp::eventLoop() {
 }
 
 void MBApp::disconnectApp() {
-    xcb_disconnect(connect.get());
+    xcb_disconnect(connect);
 }
 
 MBApp * MBApp::_instance = nullptr;
@@ -149,7 +149,7 @@ MBApp* MBApp::getInstance() {
     return _instance;
 }
 
-std::shared_ptr<xcb_connection_t> MBApp::getConnection() {
+xcb_connection_t *MBApp::getConnection() {
     return this->connect;
 }
 
@@ -157,6 +157,6 @@ xcb_window_t MBApp::getWindowID() {
     return this->window_id;
 }
 
-std::shared_ptr<xcb_screen_t> MBApp::getScreen() {
+xcb_screen_t *MBApp::getScreen() {
     return this->screen;
 }
