@@ -34,20 +34,21 @@ MBApp::MBApp() {
     ** Set MASKs.
     ** */
 
-    this->propName = XCB_CW_BACK_PIXEL | XCB_CW_EVENT_MASK;
-    this->props = new uint32_t[2]();
-    props[0] = screen->black_pixel;
-    props[1] = XCB_EVENT_MASK_KEY_PRESS | XCB_EVENT_MASK_BUTTON_PRESS | XCB_EVENT_MASK_EXPOSURE;
+    this->propName = XCB_CW_BACK_PIXEL | XCB_CW_BORDER_PIXEL | XCB_CW_EVENT_MASK;
+    this->props = new uint32_t[3]();
+    props[0] = screen->white_pixel;
+    props[1] = screen->black_pixel;
+    props[2] = XCB_EVENT_MASK_KEY_PRESS | XCB_EVENT_MASK_BUTTON_PRESS | XCB_EVENT_MASK_EXPOSURE;
 
     /*
     ** Create Foundation Background Window.
     */
 
     xcb_create_window(connect,
-                      XCB_COPY_FROM_PARENT,
+                      this->screen->root_depth,
                       this->window_id,
                       this->screen->root,
-                      0, 0, 500, 300, 30,
+                      0, 0, 1024, 768, 30,
                       XCB_WINDOW_CLASS_INPUT_OUTPUT,
                       screen->root_visual,
                       propName,
@@ -64,8 +65,11 @@ void MBApp::printScreenInfo(xcb_screen_t *screen) {
     "allowed depths len: " << screen->allowed_depths_len << std::endl <<
     "backing stores: " << screen->backing_stores << std::endl <<
     "black pixel: " << screen->black_pixel << std::endl <<
+    "white pixel: " << screen->white_pixel << std::endl <<
     "current input masks: " << screen->current_input_masks << std::endl <<
     "default colormap: " << screen->default_colormap << std::endl <<
+    "width in millimeters: " << screen->width_in_millimeters << std::endl <<
+    "width in pixels: " << screen->width_in_pixels << std::endl <<
     "height in millimeters: " << screen->height_in_millimeters << std::endl <<
     "height in pixels: " << screen->height_in_pixels << std::endl <<
     "max installed maps: " << screen->max_installed_maps << std::endl <<
@@ -87,16 +91,42 @@ void MBApp::eventLoop() {
                 std::cout << "when: " << ((xcb_key_press_event_t *)event)->time << std::endl << std::endl;
                 break;
 
-            case XCB_BUTTON_PRESS:
-                std::cout << "Button pressed!: " << ((xcb_button_press_event_t *)event)->detail << std::endl;
-                std::cout << "root: " << ((xcb_button_press_event_t *) event)->root << std::endl;
-                std::cout << "root x: " << ((xcb_button_press_event_t *) event)->root_x << std::endl;
-                std::cout << "root y: " << ((xcb_button_press_event_t *) event)->root_y << std::endl;
-                std::cout << "event: " << ((xcb_button_press_event_t *) event)->event << std::endl;
-                std::cout << "event x: " << ((xcb_button_press_event_t *) event)->event_x << std::endl;
-                std::cout << "event y: " << ((xcb_button_press_event_t *) event)->event_y << std::endl;
-                std::cout << "when: " << ((xcb_button_press_event_t *)event)->time << std::endl << std::endl;
+            case XCB_BUTTON_PRESS: {
+
+                xcb_button_press_event_t *event = event;
+
+                if (event->event == this->getWindowID()) {
+
+                    std::cout << "Button pressed!: " << event->detail << std::endl;
+                    // std::cout << "root: " << ((xcb_button_press_event_t *)
+                    // event)->root << std::endl; std::cout << "root x: " <<
+                    // ((xcb_button_press_event_t *) event)->root_x << std::endl;
+                    // std::cout << "root y: " << ((xcb_button_press_event_t *)
+                    // event)->root_y << std::endl; std::cout << "event: " <<
+                    // ((xcb_button_press_event_t *) event)->event << std::endl;
+                    std::cout << "event x: " << event->event_x << std::endl;
+                    std::cout << "event y: " << event->event_y << std::endl;
+                    std::cout << "when: " << event->time << std::endl << std::endl;
+                }
                 break;
+            }
+
+            case XCB_MOTION_NOTIFY: {
+                auto mot = (xcb_motion_notify_event_t *)event;
+                if (mot->event != this->getWindowID()) {
+                    std::cout << "you are dragging mouse!" << std::endl;
+                    std::cout << "x: " << mot->event_x << " y: " << mot->event_y << std::endl;
+
+                    int16_t conf[2] = { mot->event_x, mot->event_y };
+
+                    xcb_configure_window(this->connect,
+                                         mot->event,
+                                         XCB_CONFIG_WINDOW_X | XCB_CONFIG_WINDOW_Y,
+                                         conf);
+                    xcb_flush(this->connect);
+                }
+                break;
+            }
 
             default:
                 std::cout << "Yet another event!: " << event->sequence << std::endl << std::endl;

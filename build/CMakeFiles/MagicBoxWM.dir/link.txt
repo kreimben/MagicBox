@@ -1,1 +1,0 @@
-/usr/bin/c++     CMakeFiles/MagicBoxWM.dir/src/main.cpp.o CMakeFiles/MagicBoxWM.dir/src/MBWindow.cpp.o CMakeFiles/MagicBoxWM.dir/src/MBApp.cpp.o  -o MagicBoxWM  /usr/lib/x86_64-linux-gnu/libxcb.so 

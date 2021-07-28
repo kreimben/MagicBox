@@ -1,4 +1,5 @@
 #include "./MBApp.h"
+#include "./MBWindow.h"
 
 #include <iostream>
 #include <memory>
@@ -9,8 +10,14 @@ int main() {
 
     /* Start event loop! */
     auto app = MBApp::getInstance();
-    app->eventLoop();
 
+    //auto window = std::make_unique<MBWindow>(app->getConnection(), app->getScreen(), app->getWindowID());
+    //std::cout << "subwindow's id: " << window->window_id << std::endl;
+
+    /*
+    ** Do Anything before execute eventLoop!!!
+         */
+    app->eventLoop();
     /* After quit event loop, Disconnect the window from X Server. */
     app->disconnectApp();
 

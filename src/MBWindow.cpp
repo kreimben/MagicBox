@@ -7,37 +7,28 @@
 #include <xcb/xcb.h>
 #include <xcb/xproto.h>
 
-MBWindow::MBWindow() {
+MBWindow::MBWindow(xcb_connection_t *connect, xcb_screen_t *screen, xcb_window_t rootWindowID) {
 
-    auto instance = MBApp::getInstance();
-    this->window_id = xcb_generate_id(instance->getConnection());
+    std::cout << "MBWindow Instanciated!" << std::endl;
+
+    //auto instance = MBApp::getInstance();
+    this->window_id = xcb_generate_id(connect);
 
     auto parm = XCB_CW_BACK_PIXEL | XCB_CW_BORDER_PIXEL | XCB_CW_EVENT_MASK;
     int params[3];
-    auto screen = instance->getScreen();
-    params[0] = screen->white_pixel;
+    params[0] = (screen->white_pixel + screen->black_pixel) / 2;
     params[1] = screen->black_pixel;
-    params[2] = XCB_EVENT_MASK_FOCUS_CHANGE;
+    params[2] = XCB_EVENT_MASK_EXPOSURE | XCB_EVENT_MASK_BUTTON_MOTION;
 
-    xcb_create_window(instance->getConnection(),
+    xcb_create_window(connect,
                       XCB_COPY_FROM_PARENT,
                       this->window_id,
-                      instance->getWindowID(),
+                      rootWindowID,
                       10, 10, 50, 50, 10,
-                      XCB_WINDOW_CLASS_COPY_FROM_PARENT,
+                      XCB_WINDOW_CLASS_INPUT_OUTPUT,
                       screen->root_visual,
                       parm, params);
 
-    xcb_map_subwindows(instance->getConnection(), this->window_id);
-    xcb_flush(instance->getConnection());
-}
-
-void MBWindow::eventLoop() {
-    auto root_instance = MBApp::getInstance();
-
-    while (xcb_generic_event_t *event = xcb_wait_for_event(root_instance->getConnection())) {
-        switch (event->response_type) {
-            default: std::cout << "some event happened!: " << event->full_sequence << std::endl;
-        }
-    }
+    xcb_map_window(connect, this->window_id);
+    xcb_flush(connect);
 }

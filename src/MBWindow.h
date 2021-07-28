@@ -12,12 +12,10 @@
 class MBWindow {
 
 private:
-    xcb_window_t window_id;
 
 public:
-    MBWindow();
-
-    void eventLoop();
+    MBWindow(xcb_connection_t *connect, xcb_screen_t *screen, xcb_window_t rootWindowID);
+    xcb_window_t window_id;
 };
 
 
