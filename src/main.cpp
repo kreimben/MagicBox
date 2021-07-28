@@ -1,5 +1,6 @@
 #include "./MBApp.h"
 #include "./MBWindow.h"
+#include "./MBTopBar.h"
 
 #include <iostream>
 #include <memory>
@@ -11,8 +12,7 @@ int main() {
     /* Start event loop! */
     auto app = MBApp::getInstance();
 
-    //auto window = std::make_unique<MBWindow>(app->getConnection(), app->getScreen(), app->getWindowID());
-    //std::cout << "subwindow's id: " << window->window_id << std::endl;
+    auto topBar = std::make_unique<MBTopBar>(app->getConnection(), app->getScreen(), app->getWindowID());
 
     /*
     ** Do Anything before execute eventLoop!!!

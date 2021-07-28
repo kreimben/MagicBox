@@ -12,8 +12,8 @@
 class MBApp {
 
 private:
-    xcb_connection_t *connect;
-    xcb_screen_t     *screen;
+    std::shared_ptr<xcb_connection_t> connect;
+    std::shared_ptr<xcb_screen_t> screen;
     xcb_window_t      window_id;
     uint32_t          propName;
     uint32_t         *props;
@@ -24,14 +24,14 @@ private:
 public:
     static MBApp *getInstance();
 
-    static void printScreenInfo(xcb_screen_t *screen);
+    static void printScreenInfo(std::shared_ptr<xcb_screen_t> screen);
 
     void eventLoop();
     void disconnectApp();
 
-    xcb_connection_t *getConnection();
+    std::shared_ptr<xcb_connection_t> getConnection();
     xcb_window_t getWindowID();
-    xcb_screen_t *getScreen();
+    std::shared_ptr<xcb_screen_t> getScreen();
 };
 
 
