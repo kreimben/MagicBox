@@ -13,13 +13,15 @@ class MBApp {
 
 private:
     xcb_connection_t *connect;
-    xcb_screen_t *screen;
+    xcb_screen_t     *screen;
     xcb_window_t      window_id;
     uint32_t          propName;
     uint32_t         *props;
 
     MBApp();
     static MBApp *_instance;
+
+    void childPool();
 
 public:
     static MBApp *getInstance();

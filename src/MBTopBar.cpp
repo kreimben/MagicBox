@@ -4,18 +4,23 @@
 #include <xcb/xproto.h>
 #include <memory>
 #include <iostream>
+#include <thread>
 
 MBTopBar::MBTopBar(xcb_connection_t *connect, xcb_screen_t *screen, xcb_window_t rootWindowID) {
+
+    std::cout << "MBTopBar constructor start!" << std::endl;
 
     this->connect = connect;
     this->screen = screen;
 
     /* Generate top bar's ID */
     this->topbarWindowID = xcb_generate_id(connect);
+    std::cout << "top bar window id: " << this->topbarWindowID << std::endl;
 
     /* Get a root's width */
     auto geoInfo = xcb_get_geometry_reply(connect, xcb_get_geometry(connect, rootWindowID), nullptr);
     auto width = geoInfo->width;
+    std::cout << "width: " << width << std::endl;
 
     /* Set masks. */
     auto value_mask = XCB_CW_BACK_PIXEL | XCB_CW_BORDER_PIXEL | XCB_CW_EVENT_MASK;
@@ -29,38 +34,13 @@ MBTopBar::MBTopBar(xcb_connection_t *connect, xcb_screen_t *screen, xcb_window_t
                       XCB_COPY_FROM_PARENT,
                       this->topbarWindowID,
                       rootWindowID,
-                      0, 0, width, 50, 1,
+                      0, 0, width, 30, 1,
                       XCB_WINDOW_CLASS_INPUT_OUTPUT,
                       screen->root_visual,
                       value_mask, list);
 
     /* Map actual things. */
     xcb_map_window(connect, this->getTopbarWindowID());
-
-    this->eventLoop();
-}
-
-void MBTopBar::eventLoop() {
-    xcb_generic_event_t *event;
-
-    if (true) {
-        event =  xcb_poll_for_event( this->connect );
-        switch (event->response_type) {
-            case XCB_BUTTON_PRESS: {
-                auto ev = (xcb_button_press_event_t *)event;
-
-                std::cout << "button pressed!" << std::endl;
-                std::cout << "event x: " << ev->event_x << std::endl;
-                std::cout << "event y: " << ev->event_y << std::endl;
-                std::cout << "when: " << ev->time << std::endl;
-
-                delete ev;
-
-                break;
-            }
-        }
-
-    }
 }
 
 xcb_window_t MBTopBar::getTopbarWindowID() {

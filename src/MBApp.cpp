@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "MBApp.h"
+#include "MBTopBar.h"
 
 MBApp::MBApp() {
 
@@ -29,7 +30,9 @@ MBApp::MBApp() {
      * Generate Window ID
      */
 
+    std::cout << "genrate window id: ";
     this->window_id = xcb_generate_id(this->connect);
+    std::cout << this->window_id << std::endl;
 
     /*
     ** Set MASKs.
@@ -45,6 +48,7 @@ MBApp::MBApp() {
     ** Create Foundation Background Window.
     */
 
+    std::cout << "Before create window!" << std::endl;
     xcb_create_window(connect,
                       this->screen->root_depth,
                       this->window_id,
@@ -56,7 +60,9 @@ MBApp::MBApp() {
                       props);
 
     /* Display the foundation background window. */
+    std::cout << "Before map window" << std::endl;
     xcb_map_window(connect, window_id);
+    std::cout << "Before flush" << std::endl;
     xcb_flush(connect);
 }
 
@@ -83,7 +89,13 @@ void MBApp::printScreenInfo(xcb_screen_t *screen) {
 void MBApp::eventLoop() {
     std::cout << "MBApp::eventLoop()" << std::endl;
 
+    /* Call child windows here so check the window_id */
+    MBTopBar topbar(this->getConnection(), this->getScreen(), this->getWindowID());
+
     while (auto event = xcb_wait_for_event(this->connect)) {
+
+        xcb_flush(this->connect);
+
         std::cout << "In while loop!" << std::endl;
         switch (event->response_type) {
 
@@ -94,23 +106,21 @@ void MBApp::eventLoop() {
 
             case XCB_BUTTON_PRESS: {
 
-                xcb_button_press_event_t *event = event;
+                auto ev = (xcb_button_press_event_t *)event;
 
-                if (event->event == this->getWindowID()) {
+                if (ev->event == this->getWindowID()) { // Background
 
-                    std::cout << "Button pressed!: " << event->detail << std::endl;
-                    // std::cout << "root: " << ((xcb_button_press_event_t *)
-                    // event)->root << std::endl; std::cout << "root x: " <<
-                    // ((xcb_button_press_event_t *) event)->root_x << std::endl;
-                    // std::cout << "root y: " << ((xcb_button_press_event_t *)
-                    // event)->root_y << std::endl; std::cout << "event: " <<
-                    // ((xcb_button_press_event_t *) event)->event << std::endl;
-                    std::cout << "event x: " << event->event_x << std::endl;
-                    std::cout << "event y: " << event->event_y << std::endl;
-                    std::cout << "when: " << event->time << std::endl << std::endl;
+                    std::cout << "Button pressed!: " << ev->detail << std::endl;
+                    std::cout << "event x: " << ev->event_x << std::endl;
+                    std::cout << "event y: " << ev->event_y << std::endl;
+                    std::cout << "when: " << ev->time << std::endl << std::endl;
+
+                } else if (ev->event == topbar.getTopbarWindowID()) {
+
+                    std::cout << "Top Bar clicked!" << std::endl;
                 }
 
-                delete event;
+                delete ev;
                 break;
             }
 

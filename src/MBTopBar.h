@@ -8,7 +8,6 @@ class MBTopBar {
 
 private:
     xcb_window_t topbarWindowID;
-    void eventLoop();
 
     xcb_connection_t *connect;
     xcb_screen_t *screen;

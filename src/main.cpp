@@ -4,23 +4,23 @@
 
 #include <iostream>
 #include <memory>
+#include <thread>
 
 int main() {
 
-    std::cout << "App Started!" << std::endl;
+    std::cout << "Welcome to MagicBoxWM!" << std::endl;
 
     /* Start event loop! */
     auto app = MBApp::getInstance();
 
-    auto topBar = std::make_unique<MBTopBar>(app->getConnection(), app->getScreen(), app->getWindowID());
+    // auto topBar = std::make_unique<MBTopBar>(app->getConnection(), app->getScreen(), app->getWindowID());
 
-    /*
-    ** Do Anything before execute eventLoop!!!
-         */
-    app->eventLoop();
-    /* After quit event loop, Disconnect the window from X Server. */
-    app->disconnectApp();
-
+    /* Do Anything before execute eventLoop!!! */
+    std::thread([app] {
+        app->eventLoop();
+    }).join();
+    /* After quit event loop, Disconnect the windostd::shared_ptr<w from X Ser> r. */
+    // app->disconnectApp();
     std::cout << "Bye bye!" << std::endl;
 
     return 0;

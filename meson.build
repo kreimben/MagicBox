@@ -1,6 +1,7 @@
-project('MagicBoxWM', 'cpp')
+project('MagicBoxWM', 'cpp', 'c', default_options: [ 'c_std=c18', 'cpp_std=c++2a' ])
 
 xcb_dep = dependency('xcb')
+thread_dep = dependency('threads')
 
 executable('MagicBoxWM',
     'src/main.cpp',
@@ -14,5 +15,5 @@ executable('MagicBoxWM',
     'src/MBTopBar.h',
     'src/MBTopBar.cpp',
 
-    dependencies: xcb_dep
+    dependencies: [ xcb_dep, thread_dep ]
 )
