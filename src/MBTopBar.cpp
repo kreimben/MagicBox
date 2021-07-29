@@ -34,7 +34,7 @@ MBTopBar::MBTopBar(xcb_connection_t *connect, xcb_screen_t *screen, xcb_window_t
                       XCB_COPY_FROM_PARENT,
                       this->topbarWindowID,
                       rootWindowID,
-                      0, 0, width, 30, 1,
+                      0, 0, width, 25, 1,
                       XCB_WINDOW_CLASS_INPUT_OUTPUT,
                       screen->root_visual,
                       value_mask, list);
