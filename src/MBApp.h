@@ -21,8 +21,6 @@ private:
     MBApp();
     static MBApp *_instance;
 
-    void childPool();
-
 public:
     static MBApp *getInstance();
 
