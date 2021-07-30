@@ -1,22 +1,20 @@
-#include "./MBApp.h"
-#include "./MBWindow.h"
-#include "./MBTopBar.h"
-
 #include <iostream>
-#include <memory>
-#include <thread>
+
+#include <wayland-client-core.h>
+#include <wayland-client-protocol.h>
+#include <wayland-client.h>
+#include <wayland-cursor.h>
+#include <wayland-egl-core.h>
+#include <wayland-egl.h>
+#include <wayland-server-core.h>
+#include <wayland-server-protocol.h>
+#include <wayland-server.h>
+#include <wayland-util.h>
+#include <wayland-version.h>
 
 int main() {
 
-    std::cout << "Welcome to MagicBoxWM!" << std::endl;
-
-    /* Start event loop! */
-    auto app = MBApp::getInstance();
-
-    /* Do Anything before execute eventLoop!!! */
-    std::thread([app] {
-        app->eventLoop();
-    }).join();
+    std::cout << "Welcome to MagicBox!" << std::endl;
 
     return 0;
 }
