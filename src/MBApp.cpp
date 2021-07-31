@@ -5,13 +5,17 @@
 #include <iostream>
 #include <memory>
 
+#include <wayland-client-core.h>
+
 #include "MBApp.h"
 
-MBApp::MBApp() { }
+MBApp::MBApp() {
 
-MBApp * MBApp::_instance = nullptr;
+    std::cout << "MBApp Initializer!" << std::endl;
+    this->display = std::unique_ptr<wl_display>(wl_display_connect(nullptr));
+}
 
-MBApp* MBApp::getInstance() {
-    if (_instance == nullptr) _instance = new MBApp();
-    return _instance;
+std::unique_ptr<MBApp>& MBApp::getInstance() {
+    if (_instance.get() == nullptr) _instance = std::make_unique<MBApp>();
+    return (_instance);
 }

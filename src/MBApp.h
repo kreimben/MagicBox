@@ -8,14 +8,18 @@
 #include <iostream>
 #include <memory>
 
+#include <wayland-client-core.h>
+
 class MBApp {
 
 private:
-    MBApp();
-    static MBApp *_instance;
+    static std::unique_ptr<MBApp> _instance;
+
+    std::unique_ptr<wl_display> display;
 
 public:
-    static MBApp *getInstance();
+    MBApp();
+    static std::unique_ptr<MBApp>& getInstance();
 };
 
 
