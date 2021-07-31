@@ -11,7 +11,7 @@ int main() {
 
     std::cout << "Welcome to MagicBox!" << std::endl;
 
-    MBApp::getInstance()
+    MBApp::getInstance();
 
     return 0;
 }

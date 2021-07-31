@@ -3,7 +3,6 @@
 //
 
 #include <iostream>
-#include <memory>
 
 #include <wayland-client-core.h>
 
@@ -12,10 +11,18 @@
 MBApp::MBApp() {
 
     std::cout << "MBApp Initializer!" << std::endl;
-    this->display = std::unique_ptr<wl_display>(wl_display_connect(nullptr));
+    this->display = wl_display_connect(nullptr);
 }
 
-std::unique_ptr<MBApp>& MBApp::getInstance() {
-    if (_instance.get() == nullptr) _instance = std::make_unique<MBApp>();
-    return (_instance);
+MBApp::~MBApp() {
+
+    free(this->display);
+    free(_instance);
+}
+
+MBApp *MBApp::_instance = nullptr;
+
+MBApp* MBApp::getInstance() {
+    if (_instance == nullptr) _instance = new MBApp();
+    return _instance;
 }

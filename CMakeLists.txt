@@ -9,9 +9,10 @@ add_executable(MagicBoxWM
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 
 find_library(
-        XCB
-        NAMES xcb
-        HINTS /usr/include/xcb
+        WAYLAND_CLIENT
+        NAMES wayland-client
+        HINTS /usr/include
         REQUIRED
 )
-target_link_libraries(${PROJECT_NAME} ${XCB})
+
+target_link_libraries(${PROJECT_NAME} ${WAYLAND_CLIENT})

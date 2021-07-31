@@ -13,13 +13,14 @@
 class MBApp {
 
 private:
-    static std::unique_ptr<MBApp> _instance;
+    MBApp();
+    ~MBApp();
+    static MBApp* _instance;
 
-    std::unique_ptr<wl_display> display;
+    wl_display* display;
 
 public:
-    MBApp();
-    static std::unique_ptr<MBApp>& getInstance();
+    static MBApp* getInstance();
 };
 
 
