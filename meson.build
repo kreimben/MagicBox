@@ -9,11 +9,5 @@ executable('MagicBoxWM',
     'src/MBApp.h',
     'src/MBApp.cpp',
 
-    'src/MBWindow.h',
-    'src/MBWindow.cpp',
-
-    'src/MBTopBar.h',
-    'src/MBTopBar.cpp',
-
     dependencies: [ xcb_dep, thread_dep ]
 )

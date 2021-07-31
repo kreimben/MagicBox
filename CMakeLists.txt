@@ -4,7 +4,7 @@ project(MagicBoxWM)
 #set(CMAKE_CXX_STANDARD 17)
 
 add_executable(MagicBoxWM
-        src/main.cpp src/MBWindow.cpp src/MBWindow.h src/MBApp.cpp src/MBApp.h src/MBTopBar.cpp src/MBTopBar.h)
+        src/main.cpp src/MBApp.cpp src/MBApp.h)
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 
