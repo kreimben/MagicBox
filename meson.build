@@ -1,6 +1,6 @@
 project('MagicBoxWM', 'cpp', 'c', default_options: [ 'c_std=c18', 'cpp_std=c++2a' ])
 
-xcb_dep = dependency('xcb')
+wayland_dep = dependency('wayland-client')
 thread_dep = dependency('threads')
 
 executable('MagicBoxWM',
@@ -9,5 +9,5 @@ executable('MagicBoxWM',
     'src/MBApp.h',
     'src/MBApp.cpp',
 
-    dependencies: [ xcb_dep, thread_dep ]
+    dependencies: [ wayland_dep, thread_dep ]
 )
