@@ -1,15 +1,15 @@
-#include <wayland-client-protocol.h>
 extern "C" {
 #include <wayland-client.h>
 }
 
 #include <functional>
 #include <iostream>
+#include <wayland-client-protocol.h>
 
 class MBRegistry {
 
 private:
-  MBRegistry();
+  MBRegistry(wl_registry *reg);
   static MBRegistry *_instance;
   /* Get registry object from wl_display_get_registry(); function */
   wl_registry *_registry;

@@ -9,5 +9,14 @@ executable('MagicBoxWM',
     'src/MBApp.h',
     'src/MBApp.cpp',
 
+    'src/client/MBCompositor.h',
+    'src/client/MBCOmpositor.cpp',
+
+    'src/client/MBDisplay.h',
+    'src/client/MBDisplay.cpp',
+
+    'src/client/MBRegistry.h',
+    'stc/client/MBRegistry.cpp',
+
     dependencies: [ wayland_dep, thread_dep ]
 )

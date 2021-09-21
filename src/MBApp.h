@@ -1,17 +1,13 @@
-//
-// Created by ubuntu on 7/27/21.
-//
-
 #ifndef MAGICBOXWM_MBAPP_H
 #define MAGICBOXWM_MBAPP_H
-
-#include <iostream>
-#include <memory>
 
 extern "C" {
 #include <wayland-client-core.h>
 #include <wayland-client-protocol.h>
 }
+
+#include <iostream>
+#include <memory>
 
 class MBApp {
 

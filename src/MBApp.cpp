@@ -1,9 +1,3 @@
-//
-// Created by ubuntu on 7/27/21.
-//
-
-#include <iostream>
-
 extern "C" {
 #include <string.h>
 #include <wayland-client-core.h>
@@ -11,8 +5,9 @@ extern "C" {
 #include <wayland-client.h>
 }
 
-#include "MBApp.h"
+#include "./MBApp.h"
 #include "./client/MBCompositor.h"
+#include <iostream>
 
 // wl_compositor *MBApp::compositor = nullptr;
 // wl_shell *MBApp::shell = nullptr;
