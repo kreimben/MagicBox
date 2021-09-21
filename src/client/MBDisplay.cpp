@@ -1,6 +1,7 @@
+extern "C" {
+#include <cstdio>
 #include <wayland-client-core.h>
 #include <wayland-client-protocol.h>
-extern "C" {
 #include <cstdio>
 #include <wayland-client.h>
 }
