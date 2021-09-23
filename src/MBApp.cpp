@@ -61,7 +61,8 @@ MBApp *MBApp::getInstance() {
   return _instance;
 }
 
-// void MBApp::disconnect() { wl_display_disconnect(this->display); }
+void MBApp::disconnect() { wl_display_disconnect(this->display); }
+
 bool MBApp::setSurface(wl_surface *surface) {
 
   if (surface == nullptr) {
