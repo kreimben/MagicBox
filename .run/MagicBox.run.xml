@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="MagicBox" type="SwiftPackageManagerRunConfiguration" factoryName="Swift Package Run" singleton="false" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" RUN_PATH="/usr/bin/swift">
+    <method v="2">
+      <option name="SPM.BUILD_TASK_PROVIDER" enabled="true" />
+    </method>
+  </configuration>
+</component>
