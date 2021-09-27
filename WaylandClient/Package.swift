@@ -1,6 +1,3 @@
-//
-// Created by kreimben on 9/23/21.
-//
 // swift-tools-version:5.4
 import PackageDescription
 
