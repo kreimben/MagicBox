@@ -1,0 +1,7 @@
+/usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/bin/make -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -DCMAKE_DEPENDS_USE_COMPILER=FALSE -G "CodeBlocks - Unix Makefiles" /home/kreimben/Documents/Repository/MagicBox
+-- Configuring done
+CMake Error: Cannot determine link language for target "MagicBox".
+CMake Error: CMake can not determine linker language for target: MagicBox
+-- Generating done
+CMake Generate step failed.  Build files cannot be regenerated correctly.
+Unable to determine product file path for target MagicBox. Running and debugging will be unavailable.

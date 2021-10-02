@@ -1,0 +1,3 @@
+/home/kreimben/Documents/Repository/MagicBox/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/kreimben/Documents/Repository/MagicBox/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/kreimben/Documents/Repository/MagicBox/cmake-build-debug/CMakeFiles/MagicBox.dir
