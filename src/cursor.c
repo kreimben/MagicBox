@@ -14,40 +14,4 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/*
- * Refer to origin source.
- */
-#include "server.h"
-
-/*
- * libc
- */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-/*
- * wayland-related
- */
-#include <wayland-server-core.h>
-
-/*
- * wlroots
- */
-#include <wlr/backend.h>
-#include <wlr/render/allocator.h>
-#include <wlr/render/wlr_renderer.h>
-#include <wlr/types/wlr_xdg_shell.h>
-#include <wlr/types/wlr_cursor.h>
-
-void mb_server_ready() {
-
-}
-
-void mb_server_run() {
-
-}
-
-void mb_server_destroy_objects() {
-
-}
+#include "cursor.h"

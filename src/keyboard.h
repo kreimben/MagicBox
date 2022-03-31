@@ -14,40 +14,23 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/*
- * Refer to origin source.
- */
-#include "server.h"
+#pragma once
 
 /*
- * libc
+ * MagicBox headers
  */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "server.h"
 
 /*
  * wayland-related
  */
 #include <wayland-server-core.h>
 
-/*
- * wlroots
- */
-#include <wlr/backend.h>
-#include <wlr/render/allocator.h>
-#include <wlr/render/wlr_renderer.h>
-#include <wlr/types/wlr_xdg_shell.h>
-#include <wlr/types/wlr_cursor.h>
+struct magicbox_keyboard {
+    struct wl_list link;
+    struct magicbox_server *server;
+    struct wlr_input_device *device;
 
-void mb_server_ready() {
-
-}
-
-void mb_server_run() {
-
-}
-
-void mb_server_destroy_objects() {
-
-}
+    struct wl_listener modifiers;
+    struct wl_listener key;
+};

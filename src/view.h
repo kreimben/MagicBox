@@ -14,17 +14,7 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/*
- * Refer to origin source.
- */
-#include "server.h"
-
-/*
- * libc
- */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#pragma once
 
 /*
  * wayland-related
@@ -34,20 +24,17 @@
 /*
  * wlroots
  */
-#include <wlr/backend.h>
-#include <wlr/render/allocator.h>
-#include <wlr/render/wlr_renderer.h>
 #include <wlr/types/wlr_xdg_shell.h>
-#include <wlr/types/wlr_cursor.h>
 
-void mb_server_ready() {
-
-}
-
-void mb_server_run() {
-
-}
-
-void mb_server_destroy_objects() {
-
-}
+struct magicbox_view {
+    struct wl_list link;
+    struct magicbox_server *server;
+    struct wlr_xdg_surface *xdg_surface;
+    struct wl_listener map;
+    struct wl_listener unmap;
+    struct wl_listener destroy;
+    struct wl_listener request_move;
+    struct wl_listener request_resize;
+    bool mapped;
+    int x, y;
+};
