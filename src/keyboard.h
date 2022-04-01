@@ -34,3 +34,5 @@ struct magicbox_keyboard {
     struct wl_listener modifiers;
     struct wl_listener key;
 };
+
+void server_new_keyboard(struct magicbox_server *server, struct wlr_input_device *device);

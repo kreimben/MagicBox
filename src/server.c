@@ -20,16 +20,12 @@
 #include "server.h"
 
 /*
- * libc
+ * system
  */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-/*
- * wayland-related
- */
-#include <wayland-server-core.h>
 
 /*
  * wlroots
@@ -41,13 +37,13 @@
 #include <wlr/types/wlr_cursor.h>
 
 void mb_server_ready() {
-
+    printf("Hello, World");
 }
 
 void mb_server_run() {
-
+    printf("Hello, World");
 }
 
 void mb_server_destroy_objects() {
-
+    printf("Hello, World");
 }

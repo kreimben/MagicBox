@@ -38,3 +38,7 @@ struct magicbox_view {
     bool mapped;
     int x, y;
 };
+
+struct magicbox_view *desktop_view_at(
+        struct magicbox_server *server, double lx, double ly,
+        struct wlr_surface **surface, double *sx, double *sy);
