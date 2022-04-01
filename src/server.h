@@ -35,6 +35,7 @@
 #include <wlr/render/wlr_renderer.h>
 #include <wlr/types/wlr_xdg_shell.h>
 #include <wlr/types/wlr_cursor.h>
+#include <wlr/types/wlr_scene.h>
 
 /*
  * MagicBox struct
@@ -45,6 +46,7 @@ struct magicbox_server {
     struct wlr_backend *backend;
     struct wlr_renderer *renderer;
     struct wlr_allocator *allocator;
+    struct wlr_scene *scene;
 
     struct wlr_xdg_shell *xdg_shell;
     struct wl_listener new_xdg_surface;
@@ -63,7 +65,7 @@ struct magicbox_server {
     struct wl_listener request_cursor;
     struct wl_listener request_set_selection;
     struct wl_list keyboards;
-    enum magicbox_cursur_mode cursur_mode;
+    enum magicbox_cursur_mode cursor_mode;
     struct magicbox_view *grabbed_view;
     double grab_x, grab_y;
     struct wlr_box grab_geobox;
