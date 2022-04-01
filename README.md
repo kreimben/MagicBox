@@ -4,3 +4,5 @@
 
 
 ### Less is More. Focus on what you work.
+
+Inspired by TinyWL
