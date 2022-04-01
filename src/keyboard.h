@@ -29,10 +29,11 @@
 struct magicbox_keyboard {
     struct wl_list link;
     struct magicbox_server *server;
-    struct wlr_input_device *device;
+    struct wlr_keyboard *wlr_keybaord;
 
     struct wl_listener modifiers;
     struct wl_listener key;
+    struct wl_listener destroy;
 };
 
 void server_new_keyboard(struct magicbox_server *server, struct wlr_input_device *device);

@@ -30,8 +30,9 @@
  */
 #include <wlr/types/wlr_surface.h>
 #include <wlr/types/wlr_seat.h>
+#include <assert.h>
 
-static void focus_view(struct magicbox_view *view, struct wlr_surface *surface) {
+void focus_view(struct magicbox_view *view, struct wlr_surface *surface) {
     // keyboard focus.
     if (!view) return;
 
@@ -47,17 +48,19 @@ static void focus_view(struct magicbox_view *view, struct wlr_surface *surface) 
         struct wlr_xdg_surface *previous = wlr_xdg_surface_from_wlr_surface(
                 seat->keyboard_state.focused_surface
         );
-        wlr_xdg_toplevel_set_activated(previous, false);
+        assert(previous->role == WLR_XDG_SURFACE_ROLE_TOPLEVEL);
+        wlr_xdg_toplevel_set_activated(previous->toplevel, false);
     }
 
     struct wlr_keyboard *keyboard = wlr_seat_get_keyboard(seat);
 
     // Move the view to the front.
-    wl_list_remove(&view.link);
+    wlr_scene_node_raise_to_top(view->scene_node);
+    wl_list_remove(&view->link);
     wl_list_insert(&server->views, &view->link);
 
     // Activate the new surface.
-    wlr_xdg_toplevel_set_activated(view->xdg_surface, true);
+    wlr_xdg_toplevel_set_activated(view->xdg_toplevel, true);
 
     /*
 	 * Tell the seat to have the keyboard enter this surface. wlroots will keep
@@ -65,13 +68,13 @@ static void focus_view(struct magicbox_view *view, struct wlr_surface *surface) 
 	 * clients without additional work on your part.
 	 */
     wlr_seat_keyboard_notify_enter(seat,
-                                   view->xdg_surface->surface,
+                                   view->xdg_toplevel->base->surface,
                                    keyboard->keycodes,
                                    keyboard->num_keycodes,
                                    &keyboard->modifiers);
 }
 
-static bool view_at(struct magicbox_view *view,
+/*static bool view_at(struct magicbox_view *view,
                     double lx, double ly,
                     struct wlr_surface **surface,
                     double *sx, double *sy) {
@@ -97,7 +100,7 @@ static bool view_at(struct magicbox_view *view,
     }
 
     return false;
-}
+}*/
 
 struct magicbox_view *desktop_view_at(
         struct magicbox_server *server, double lx, double ly,
@@ -105,11 +108,16 @@ struct magicbox_view *desktop_view_at(
 
     // This iterates over all of our surfaces and attempts to find one under the cursor.
     // This relies on server->views being ordered from top-to-bottom.
-    struct magicbox_view *view;
-    wl_list_for_each(view, &server->views, link) {
-        if (view_at(view, lx, ly, surface, sx, sy)) {
-            return view;
-        }
+    struct wlr_scene_node *node = wlr_scene_node_at(
+            &server->scene->node, lx, ly, sx, sy);
+
+    if (node == NULL || node->type != WLR_SCENE_NODE_SURFACE) return NULL;
+    *surface = wlr_scene_surface_from_node(node)->surface;
+
+    /* Find the node corresponding to the magicbox_view at the root of this surface tree,
+     * it is the only one for which we set the data field. */
+    while (node != NULL && node->data == NULL) {
+        node = node->parent;
     }
-    return NULL;
+    return node->data;
 }

@@ -18,6 +18,7 @@
  * MagicBox
  */
 #include "keyboard.h"
+#include "view.h"
 
 /*
  * system
@@ -45,11 +46,11 @@ static void keyboard_handle_modifiers(struct wl_listener *listener, void *data) 
     struct magicbox_keyboard *keyboard = wl_container_of(listener, keyboard, modifiers);
 
     // Set all keyboards to wayland.
-    wlr_seat_set_keyboard(keyboard->server->seat, keyboard->device);
+    wlr_seat_set_keyboard(keyboard->server->seat, keyboard->wlr_keybaord);
 
     // send modifiers to the client
     wlr_seat_keyboard_notify_modifiers(keyboard->server->seat,
-                                       &keyboard->device->keyboard->modifiers);
+                                       &keyboard->wlr_keybaord->modifiers);
 }
 
 static bool handle_keybinding(struct magicbox_server *server, xkb_keysym_t sym) {
@@ -61,16 +62,8 @@ static bool handle_keybinding(struct magicbox_server *server, xkb_keysym_t sym) 
         case XKB_KEY_F1:
             // Cycle to the next view
             if (wl_list_length(&server->views) < 2) break;
-            struct magicbox_view *current_view = wl_container_of(
-            server->views.next, current_view, link)
-            );
-            struct magicbox_view *next_view = wl_container_of(
-                    server->link.next, next_view, link
-            );
-            focus_view(next_view, next_view->xdg_surface->surface);
-            // Move the previous view to the end of the list
-            wl_list_remove(&current_view->link);
-            wl_list_insert(server->views.prev, &current_view->link);
+            struct magicbox_view *next_view = wl_container_of(server->views.prev, next_view, link);
+            focus_view(next_view, next_view->xdg_toplevel->base->surface);
             break;
         default:
             return false;
@@ -81,7 +74,7 @@ static bool handle_keybinding(struct magicbox_server *server, xkb_keysym_t sym) 
 static void keybaord_handle_key(struct wl_listener *listener, void *data) {
     struct magicbox_keyboard *keyboard = wl_container_of(listener, keyboard, key);
     struct magicbox_server *server = keyboard->server;
-    struct wlr_event_keyboard_key *event = data;
+    struct wlr_keyboard_key_event *event = data;
     struct wlr_seat *seat = server->seat;
 
     // Translate libinput keycode -> xkbcommon
@@ -89,12 +82,12 @@ static void keybaord_handle_key(struct wl_listener *listener, void *data) {
 
     // Get a list of keysyms based on the keymap for this keyboard.
     const xkb_keysym_t *syms;
-    int nsyms = xkb_state_key_get_syms(keyboard->device->keyboard->xkb_state,
+    int nsyms = xkb_state_key_get_syms(keyboard->wlr_keybaord->xkb_state,
                                        keycode,
                                        &syms);
 
     bool handled = false;
-    uint32_t modifiers = wlr_keyboard_get_modifiers(keyboard);
+    uint32_t modifiers = wlr_keyboard_get_modifiers(keyboard->wlr_keybaord);
     if ((modifiers & WLR_MODIFIER_LOGO) && event->state == WL_KEYBOARD_KEY_STATE_PRESSED) {
         for (int i = 0; i < nsyms; i++)
             handled = handle_keybinding(server, syms[i]);
@@ -102,7 +95,7 @@ static void keybaord_handle_key(struct wl_listener *listener, void *data) {
 
     if (!handled) {
         // Otherwise, we pass it along to the client
-        wlr_seat_set_keyboard(seat, keyboard->device);
+        wlr_seat_set_keyboard(seat, keyboard->wlr_keybaord);
         wlr_seat_keyboard_notify_key(seat,
                                      event->time_msec,
                                      event->keycode,
@@ -110,10 +103,21 @@ static void keybaord_handle_key(struct wl_listener *listener, void *data) {
     }
 }
 
+static void keyboard_handle_destroy(struct wl_listener *listener, void *data) {
+    // This event is raised by the keyboard base wlr_input_device to signal the destruction of the wlr_keyboard.
+    // It will no longer receive events and should be destroyed.
+    struct magicbox_keyboard *keyboard = wl_container_of(listener, keyboard, destroy);
+    wl_list_remove(&keyboard->modifiers.link);
+    wl_list_remove(&keyboard->key.link);
+    wl_list_remove(&keyboard->destroy.link);
+    wl_list_remove(&keyboard->link);
+    free(keyboard);
+}
+
 void server_new_keyboard(struct magicbox_server *server, struct wlr_input_device *device) {
     struct magicbox_keyboard *keyboard = calloc(1, sizeof(struct magicbox_keyboard));
     keyboard->server = server;
-    keyboard->device = device;
+    keyboard->wlr_keybaord = device->keyboard;
 
     // Prepare XKB keymap and assign it to the keybaord.
     struct xkb_context *context = xkb_context_new(XKB_CONTEXT_NO_FLAGS);

@@ -25,20 +25,23 @@
  * wlroots
  */
 #include <wlr/types/wlr_xdg_shell.h>
+#include <wlr/types/wlr_scene.h>
 
 struct magicbox_view {
     struct wl_list link;
     struct magicbox_server *server;
-    struct wlr_xdg_surface *xdg_surface;
+    struct wlr_xdg_toplevel *xdg_toplevel;
+    struct wlr_scene_node *scene_node;
     struct wl_listener map;
     struct wl_listener unmap;
     struct wl_listener destroy;
     struct wl_listener request_move;
     struct wl_listener request_resize;
-    bool mapped;
     int x, y;
 };
 
 struct magicbox_view *desktop_view_at(
         struct magicbox_server *server, double lx, double ly,
         struct wlr_surface **surface, double *sx, double *sy);
+
+void focus_view(struct magicbox_view *view, struct wlr_surface *surface);
